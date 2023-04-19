@@ -47,10 +47,103 @@ Next.js 提供三种渲染方式
 
    客户端渲染就是，在客户端发送请求，服务器返回JSON数据，客户端将数据转化为HTML, 中间比预渲染多了一步（看似多了一步，其实多了很多请求，一个页面的加载可能要请求很多基础数据，还要执行JS计算，操作DOM）；而预渲染，一个请求直接把页面搞出来了。 
     
+- Pre-rendering （预渲染，其中 Server-Side Rendering、Static Site Generation 是预渲染）
 
+    默认情况下，Next.js 预渲染每个页面。这意味着 Next.js 会提前为每个页面生成 HTML，而不是全部由客户端 JavaScript 完成。预渲染可以带来更好的性能和 SEO。
+
+
+    每个生成的 HTML 都与该页面所需的最少 JavaScript 代码相关联。当浏览器加载页面时，其 JavaScript 代码将运行并使页面完全交互。 （这个过程称为水合作用。）
+
+    - Static Site Generation 
+
+    静态生成是在构建时生成 HTML 的预渲染方法。然后在每个请求上重新使用预呈现的 HTML。
+
+    - Server-Side Rendering
+
+    服务器端呈现是在每个请求上生成 HTML 的预呈现方法。
+
+    In development mode (when you run npm run dev or yarn dev), pages are pre-rendered on every request.  This also applies to Static Generation to make it easier to develop.  When going to production, Static Generation will happen once, at build time, and not on every request.
+
+    在开发模式下(当你运行npm run dev或yarn dev时)，页面会在每个请求上被预渲染。这也适用于静态生成，使其更容易开发。当进入生产环境时，静态生成只会在构建时发生一次，而不是在每个请求时都发生。
+
+    - 哪些常见适合 Static Generation 
+        - 营销页面
+        - Blog posts
+        - 电子商务产品列表
+        - 帮助文档
+
+    - Static Generation 静态生成，有可以分为两种，一种是需要请求数据；一种不需要请求数据，本身就是静态的HTML
+
+### Static Generation with Data using getStaticProps (要请求数据的静态生成)
+
+核心就是使用 getStaticProps 异步函数，通过这个函数告诉组件，嘿，你有一些依赖数据，请稍等～ 666
+
+```js
+// Home 组件
+export default function Home(props) { ... }
+
+// 同时导出一个 getStaticProps 函数
+export async function getStaticProps() {
+  // Get external data from the file system, API, DB, etc.
+  // 从文件系统、API、DB等获取外部数据 （异步数据）
+  const data = ...
+
+  // The value of the `props` key will be passed to the `Home` component
+  // 数据通过 props 传递到 Home 组件
+
+  return {
+    props: ...
+  }
+}
+
+```
+
+
+### API Route 
+
+API Route 请求的端点，它们可以部署为无服务器函数（也称为 Lambda）。
+换句话手，可以在 API Route 实现自己的后台服务器，创建 API 接口，使用Node.js + Express（前后端在同一个项目里）；
+同时也可以请求外部的接口，如请求JAVA、GO等 开发的服务接口。
+
+请求可以使用 Api Route 实现，就这么简单。
+
+不要从 getStaticProps 或 getStaticPaths 获取 API 路由
+
+getStaticProps and getStaticPaths run only on the server-side and will never run on the client-side.
+getStaticProps 和 getStaticPaths 仅在服务器端运行，永远不会在客户端运行。
+
+
+API路由的一个很好的用例是处理表单输入。例如，您可以在页面上创建一个表单，并让它向API路由发送POST请求。然后可以编写代码直接将其保存到数据库中。API路由代码不会成为客户端包的一部分，因此您可以安全地编写服务器端代码。
+
+```js
+export default function handler(req, res) {
+  const email = req.body.email;
+  // Then save email to your database, etc...
+}
+```
+
+
+``` js
+// req = HTTP incoming message, res = HTTP server response
+export default function handler(req, res) {
+  // ...
+}
+```
+
+
+
+在 `pages/api` 目录下
+
+
+### SEO 优化
 
 ---
 以上是基于 https://nextjs.org/learn 的学习代码，在 nextjs-blog 项目。
 ---
 
-## 
+## Full Stack Airbnb Clone with Next.js 13 App Router: React, Tailwind, Prisma, MongoDB, NextAuth 2023
+
+进一步学习 Next.js 13
+
+跟着油管的一个项目学习
+https://www.youtube.com/watch?v=c_-b_isI4vg&t=14s
