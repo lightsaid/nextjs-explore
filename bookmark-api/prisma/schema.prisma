@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  @@map("users")
+  id    Int     @id @default(autoincrement())
+  name String 
+  telphone String @unique
+  role Role @default(USER)
+  password String
+  avatar String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // 定义一对多关系
+  Categories Category[]
+}
+
+model Category {
+  @@map("categories")
+  id    Int     @id @default(autoincrement())
+  name String
+  parentId Int @default(0)
+  // 定义一对多关系
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // 定义一对多关系
+  bookmarks Bookmark[]
+}
+
+model Bookmark {
+  @@map("bookmarks")
+  id    Int     @id @default(autoincrement())
+  name String
+  link String
+  favicon String?
+  description String?
+  // 定义一对多关系
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+}
+
+enum Role {
+  USER
+  ADMIN
+}

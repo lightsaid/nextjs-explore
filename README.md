@@ -338,6 +338,130 @@ export default function Error({
 以上是基于 https://nextjs.org/learn 的学习代码，在 nextjs-blog 项目。
 ---
 
+
+
+## Bookmark-api 
+
+搭建一个学习 Next.js 13 的 api 服务。
+
+简单记录一下初始化步骤
+
+### 初始化
+
+``` bash
+mkdir bookmark-api
+cd bookmark-api
+npm init -y
+npm install typescript ts-node @types/node --save-dev
+npx tsc --init
+npm install prisma --save-dev
+npx prisma init --datasource-provider --help
+npx prisma init --datasource-provider postgresql
+```
+
+### 简单设计一个书签数据库
+
+- 用户表设计 User
+    - id
+    - name
+    - telphone
+    - password
+    - avatar
+    - created_at
+    - updated_at
+
+
+- 分类表设计 Category
+    - id
+    - name
+    - user_id
+    - parent_id
+    - created_at
+    - updated_at
+    
+- 书签表设计 Bookmark
+    - id
+    - name
+    - link
+    - favicon
+    - description
+
+### 简单的功能设计
+
+- 用户注册登录
+- 用户注册时，默认生成一个 Default 分类
+- 创建分类
+- 创建书签
+
+### 定义模型
+
+``` prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  @@map("users")
+  id    Int     @id @default(autoincrement())
+  name String 
+  telphone String @unique
+  role Role @default(USER)
+  password String
+  avatar String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // 定义一对多关系
+  Categories Category[]
+}
+
+model Category {
+  @@map("categories")
+  id    Int     @id @default(autoincrement())
+  name String
+  parentId Int @default(0)
+  // 定义一对多关系
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // 定义一对多关系
+  bookmarks Bookmark[]
+}
+
+model Bookmark {
+  @@map("bookmarks")
+  id    Int     @id @default(autoincrement())
+  name String
+  link String
+  favicon String?
+  description String?
+  // 定义一对多关系
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+```
+
+### 迁移数据库
+- 修改 .env 配置文件
+``` env
+DATABASE_URL="postgresql://postgres:rootcc@localhost:5432/bookmarks?schema=public"
+```
+- 同步到数据库
+``` base
+npx prisma db push
+```
+
 ## Full Stack Airbnb Clone with Next.js 13 App Router: React, Tailwind, Prisma, MongoDB, NextAuth 2023
 
 进一步学习 Next.js 13
