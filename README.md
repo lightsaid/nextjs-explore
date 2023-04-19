@@ -6,7 +6,9 @@ Next.js 是什么？
 
     Next.js 类似 Nuxt.js 这类框架，先入为主，先使用的是Nuxt.js, 尽管 Vue 是摸着 React 过河的。
 
-## 阅读官方文档的笔记
+## 环境和渲染概念
+
+这里是一些开发功能介绍和渲染理论
 
 ### 环境与编译相关
 - Development and Production Environments 
@@ -34,7 +36,7 @@ Next.js 是什么？
     在项目打包后会将代码集中生成到一个js文件中（如：bundle.js）, 但是呢，它会对pages下的每一个页面生产一个
     比较小 chunk.js ，以此来提供加载页面的速度。
 
-### 渲染
+### 渲染相关
 
 Next.js 提供三种渲染方式
 
@@ -102,6 +104,9 @@ export async function getStaticProps() {
 ### API Route 
 
 API Route 请求的端点，它们可以部署为无服务器函数（也称为 Lambda）。
+
+在 `pages/api` 目录下
+
 换句话手，可以在 API Route 实现自己的后台服务器，创建 API 接口，使用Node.js + Express（前后端在同一个项目里）；
 同时也可以请求外部的接口，如请求JAVA、GO等 开发的服务接口。
 
@@ -130,10 +135,202 @@ export default function handler(req, res) {
 }
 ```
 
+## 读 DOCS 笔记和理解
+
+先读读 Docs，在上手撸码 ～～ 
+
+### Routing 路由模块
+
+这块介绍路由，和页面组织，涉及 布局组件、嵌套路由、动态路由，通过对比 Nuxt3 学习和理解。
+
+- Node.js 依赖 >= 16.8 (使用app目录结构要求)
+
+- 使用 app 目录自动创建一个新的 Next.js 项目, 默认是TS模板
+``` bash
+npx create-next-app@latest --experimental-app
+```
+
+- app/layout.tsx 布局组件，可以在这里添加<html>、<meta>、<body>诸如此类公共内容 （根布局必须保护 html、body 元素）
+
+- 默认的首页或者说入口页面是`/app/page.tsx`,这一点和 Next3 有区别，Nuext3 是 `app.vue(或者 pages/index.vue)`
+  Next.js13页面创建建议在app目录下创建，如果 product 页面，`app/product/page.tsx`
+  
+  这种组件结构根 Vue的 Nuxt3 很像。
+  Inside the app directory, folders are used to define routes. (在 app 目录中，文件夹用于定义路由)
+
+- 同时在 app/ 目录路由下，也可以自定义自己的布局，命名同样是 layout.tsx, 这个布局作用于整个目录的组件，同时要删除根布局文件（app/layout.tsx）。
+  这一点，感觉没有 Nuxt3 好，Nuxt 是集中管理，布局，组件指定使用那个布局组件。
+
+- 布局替代品 template.tsx, 不推荐，不建议使用
+
+- 动态路由结构，根 Nuxt3 很像，虽然没有Nuxt3简洁，但是应对较复杂的组件应该不错吧
+``` txt
+- app
+    - blog
+        - page.tsx
+        - [id]
+            - page.tsx
+    - page.tsx
+    - layout.tsx
+```
+
+如何获取动态路由参数和查询参数呢？都在 props 里, 下面举个栗子
+``` tsx
+export default function Page({ params, searchParams }:{ 
+    params: { id: string},
+    searchParams: { page: 1, size: 10 },
+}) {
+    return <h1>ID: {params.id} ｜ page: {searchParams.page}</h1>
+}
+```
+
+- Linking and Navigating
+
+useRouter 提供 push(), router.replace(), refresh() ... 等方法。
+
+一些原理：
+useRouter 更新变化的内容，如公共layout.tsx布局则不会更新，这会很快。
+路由器通过重新使用客户端缓存中未更改的段....
+
+应该是对比缓存，选择更新啥的。
+
+- 如何令缓存失效呢？就是要服务的新数据，那就使用 `router.refresh()`
+这会向服务器发出一个新请求，重新获取数据请求并重新呈现服务器组件。
+
+另外这是 客户端缓存，而不是HTTP缓存
+
+- Link 组件，当使用 Link 组件是，预与请求页面数据。上面 useRouter 也可以实现预请求, 用就可以实现 `router.prefetch`
+
+- Static and Dynamic Routes
+    - 如果路由是静态的，路由段的所有**服务器组件**负载都将被预取。
+    - 如果路由是动态的, ..... TODO:
+
+Prefetching is only enabled in production (预请求仅在生产中启用)
+
+Prefetching can be disabled by passing prefetch={false} to <Link> 
+（可以通过将 prefetch={false} 传递给 <Link> 来禁用预取）
+
+``` tsx
+'use client';
+
+import { useRouter } from 'next/navigation';
+
+export default function Page() {
+  const router = useRouter();
+
+  return (
+    <button type="button" onClick={() => router.push('/dashboard')}>
+      Dashboard
+    </button>
+  );
+}
+```
+
+- Loading UI 为了增强体验性，Next.js 13 增加了一个 loading.tsx 组件，在没有请求到数据的时候使用，需要配合 Suspense 组件使用
+- app/dashboard/loading.tsx
+``` tsx
+export default function Loading() {
+  // You can add any UI inside Loading, including a Skeleton.
+  // 添加自己的 loading 效果 和 页面骨架
+  return <LoadingSkeleton />
+}
+
+// 在同一文件夹中，loading.js 将嵌套在 layout.js 中。
+// 它会将 page.js 文件和下面的所有子文件包装在 <Suspense> 边界中。
+<Layout>
+    <Header />
+    <SideNav />
+    <Suspense fallback={ <Loading />}>
+        <Page>
+    </Suspense>
+</Layout>
+```
+
+- Error Handling 错误处理
+
+error.tsx 处理运行时错误，在这个文件里包括的所有错误，结构如：
+
+``` tsx
+- app
+    - layout.tsx
+    - dashboard
+        - layout.tsx
+        - page.tsx
+        - error.tsx
+```
+
+**用法跟 loading.tsx 很像，先定义 error.tsx, 然后结合 ErrorBounddary 组件使用，包裹 page，其实就是通过内部组件 ErrorBounddary 捕获到错误传递到error.tsx组件**
 
 
-在 `pages/api` 目录下
+错误处理最总要的一点： 将错误隔离到受影响的部分，同时保持应用程序的其余部分正常运行。
+``` tsx
+- app/dashboard/error.tsx 
 
+'use client'; // Error components must be Client components
+
+import { useEffect } from 'react';
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    // 将错误记录到错误报告服务
+    console.error(error);
+  }, [error]);
+
+  return (
+    <div>
+      <h2>Something went wrong!</h2>
+      <button
+        onClick={
+          // Attempt to recover by trying to re-render the segment
+          // 尝试通过重新渲染片段来恢复
+          () => reset()
+        }
+      >
+        Try again
+      </button>
+    </div>
+  );
+}
+
+```
+
+- 当然还有 global-error.tsx 处理根布局组件错误，处理全局错误 /app/error.tsx
+
+一个较完整的错误做法
+``` tsx
+- app
+    - global-error.tsx
+    - error.tsx
+    ...
+    - page1
+        - error.tsx   不会捕获同目录的layout.tsx, 处于同目录的layout可能还用于其他页面，因此layout只能由上级error.tsx处理
+        - layout.tsx 
+    -- page2
+        - error.tsx
+    ....
+
+```
+
+- Route Handlers
+
+### Rendering 渲染
+
+### Data Fetching 数据请求
+
+### Styling 样式
+
+### Optimizing 优化/压缩
+
+### Configuring 配置
+
+### Deploying 部署
 
 ### SEO 优化
 
