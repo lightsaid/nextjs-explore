@@ -4,6 +4,7 @@ import * as smsService from "../services/sms_service"
 import bcrypt from "bcryptjs"
 import { Prisma } from "@prisma/client"
 import { createUser, findUniqueUser } from "../services/user_service"
+import { createCategory } from "../services/category_server"
 import AppError from "../utils/app_error"
 import jwt from "jsonwebtoken"
 
@@ -43,8 +44,22 @@ export const registerHandler = async (req: Request<any>, res: Response, next: Ne
 
         let data = await createUser(user)
 
-        res.json(data)
+        let input = {
+            name: req.body.name,
+            parentId: req.body.parentId,
+            user: {
+                connect: {
+                    id: data.id
+                }
+            }
+        }
 
+        let timer = setTimeout(() => {
+            createCategory(input)
+            clearTimeout(timer)
+        }, 0);
+
+        res.json(data)
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             if (error.code === 'P2002') {
