@@ -13,7 +13,7 @@ export const errCodeInvalid = "验证码无效"
 export const errCodeExpired = "验证码过期"
 export const errCodeSuccess = "SUCCESS"
 
-export const createSMSCode = (telephone: string) => {
+export const createSMSCode = (telphone: string) => {
     // 设置5分钟时效
     let expire = new Date(Date.now() + 5 * 60 * 1000)
     let code = randomNumber(1000, 10000)
@@ -23,13 +23,15 @@ export const createSMSCode = (telephone: string) => {
         code
     }
 
-    smsMaps.set(telephone, smscode)
+    console.log("telphone >>> : ", telphone)
+
+    smsMaps.set(telphone, smscode)
 
     // 10分钟后删除
     let timer = setTimeout(()=>{
-        let res = smsMaps.get(telephone)
+        let res = smsMaps.get(telphone)
         if (res) {
-            smsMaps.delete(telephone)
+            smsMaps.delete(telphone)
         }
         clearTimeout(timer)
     }, 10 * 60 *1000)
@@ -37,8 +39,12 @@ export const createSMSCode = (telephone: string) => {
     return code
 }
 
-export const verifyCode = (telephone: string, code: number) => {
-    let res = smsMaps.get(telephone)
+export const verifyCode = (telphone: string, code: number) => {
+    let res = smsMaps.get(telphone)
+    smsMaps.forEach((item, key)=> {
+        console.log(">>> ",item, "key: ", key)
+    })
+
     if (!res || res.code != code) {
         return errCodeInvalid
     }
@@ -51,9 +57,9 @@ export const verifyCode = (telephone: string, code: number) => {
     return errCodeSuccess
 }
 
-export const deleteCode = (telephone: string, code: number) => {
-    let res = smsMaps.get(telephone)
-    if (res && smsMaps.get(telephone)?.code == code) {
-        smsMaps.delete(telephone)
+export const deleteCode = (telphone: string, code: number) => {
+    let res = smsMaps.get(telphone)
+    if (res && smsMaps.get(telphone)?.code == code) {
+        smsMaps.delete(telphone)
     }
 }

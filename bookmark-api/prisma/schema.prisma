@@ -49,6 +49,8 @@ model Bookmark {
   // 定义一对多关系
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("bookmarks")
 }

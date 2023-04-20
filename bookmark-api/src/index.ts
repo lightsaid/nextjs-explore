@@ -12,7 +12,7 @@ import bookmarkRoute from "./routes/bookmark_route"
 import smsRoute from "./routes/sms_route"
 
 
-
+console.log(">>> env: ",process.env)
 
 const config = {
     serverPort: process.env.SERVER_PORT || 2000
@@ -66,14 +66,15 @@ app.use((error: AppError, req: Request, res: Response, next: NextFunction) => {
                 "message": "记录不存在"
             })
         }
-        error.status = error.status || "error"
-        error.statusCode = error.statusCode || 500
-
-        res.status(error.statusCode).json({
-            status: error.status,
-            message: error.message
-        })
     }
+
+    error.status = error.status || "error"
+    error.statusCode = error.statusCode || 500
+
+    res.status(error.statusCode).json({
+        status: error.status,
+        message: error.message
+    })
 })
 
 app.listen(config.serverPort, () => {
