@@ -10,9 +10,9 @@ Next.js 是什么？
 
 ``` txt
 ├── README.md        自我描述和笔记   
-├── bookmark-api     为了学习 next.js13 写的书签 api，已完成
-├── bookmark-app     使用 next.js13 开发书签项目， 等完成
-└── nextjs-blog      跟着官网文档learn学习
+├── bookmark-api     为了学习 next.js13 写的书签 api    已完成
+├── bookmark-app     使用 next.js13 开发书签项目，      待完成
+└── nextjs-blog      跟着官网文档learn学习              
 ```
 
 ## 环境和渲染概念
