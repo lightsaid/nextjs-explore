@@ -6,6 +6,15 @@ Next.js 是什么？
 
     Next.js 类似 Nuxt.js 这类框架，先入为主，先使用的是Nuxt.js, 尽管 Vue 是摸着 React 过河的。
 
+## 简单介绍
+
+``` txt
+├── README.md        自我描述和笔记   
+├── bookmark-api     为了学习 next.js13 写的书签 api，已完成
+├── bookmark-app     使用 next.js13 开发书签项目， 等完成
+└── nextjs-blog      跟着官网文档learn学习
+```
+
 ## 环境和渲染概念
 
 这里是一些开发功能介绍和渲染理论
