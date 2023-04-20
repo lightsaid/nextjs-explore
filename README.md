@@ -339,12 +339,9 @@ export default function Error({
 ---
 
 
-
 ## Bookmark-api 
 
-搭建一个学习 Next.js 13 的 api 服务。
-
-简单记录一下初始化步骤
+搭建一个学习 Next.js 13 的 api 服务；同时学习一个 Prisma，简单记录一下项目创建步骤。
 
 ### 初始化
 
@@ -461,6 +458,21 @@ DATABASE_URL="postgresql://postgres:rootcc@localhost:5432/bookmarks?schema=publi
 ``` base
 npx prisma db push
 ```
+
+### 安装 Node Express 项目常用工具，准备编码
+
+```bash
+npm i express dotenv  http-errors morgan  
+npm i -D nodemon @types/express @types/dotenv @types/cookie-parser @types/http-errors @types/morgan
+```
+
+大概记得这么多了，后续缺装啥，不在罗列这些....
+
+创建 src 目录，后续就在这里面编码～～
+
+好久没写 Node + Express 项目，仅此记录一下创建过程，回顾一下，到此结速。
+
+开始 api 编码，不在赘述。
 
 ## Full Stack Airbnb Clone with Next.js 13 App Router: React, Tailwind, Prisma, MongoDB, NextAuth 2023
 
