@@ -1,0 +1,530 @@
+{
+	"info": {
+		"_postman_id": "8a23a90c-ab3f-42b8-b9eb-8ab675f631fd",
+		"name": "Bookmarks",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "用户注册",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"telphone\": \"18123456788\",\n    \"code\": 4456,\n    \"name\": \"xqq\",\n    \"password\": \"abc123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "用户登陆",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"telphone\": \"18123456789\",\n    \"password\": \"abc123\",\n    \"type\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "发送短信验证码",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"telphone\": \"18123456788\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/sms/send",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"sms",
+						"send"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刷新Token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:2000/v1/auth/refresh",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "创建分类",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTY4MTk2NjExMCwiZXhwIjoxNjgxOTY3MDEwfQ.Q22PFbQRuDNDfK-PDZCsaFQ4e8fOCadChXqNfcKfUfs",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"测试\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新分类",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTY4MTk2NjExMCwiZXhwIjoxNjgxOTY3MDEwfQ.Q22PFbQRuDNDfK-PDZCsaFQ4e8fOCadChXqNfcKfUfs",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"生活\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/categories/1",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"categories",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "分类列表",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTY4MTk2NjExMCwiZXhwIjoxNjgxOTY3MDEwfQ.Q22PFbQRuDNDfK-PDZCsaFQ4e8fOCadChXqNfcKfUfs",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"生活\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除分类",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTY4MTk2NjExMCwiZXhwIjoxNjgxOTY3MDEwfQ.Q22PFbQRuDNDfK-PDZCsaFQ4e8fOCadChXqNfcKfUfs",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"生活\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/categories/5",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"categories",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "创建书签",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTY4MTk2NzY1NiwiZXhwIjoxNjgxOTY4NTU2fQ.CF7C2hNRYSHmX2dxWJgd8nWzqu2HZcGVmaSD9MwXCJA",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"tesy\",\n    \"link\": \"https://www.baidu.com\",\n    \"categoryId\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/bookmarks",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"bookmarks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新书签",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTY4MTk2NzY1NiwiZXhwIjoxNjgxOTY4NTU2fQ.CF7C2hNRYSHmX2dxWJgd8nWzqu2HZcGVmaSD9MwXCJA",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"hhh\",\n    \"link\": \"https://www.google.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/bookmarks/4",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"bookmarks",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "书签列表",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTY4MTk2NzY1NiwiZXhwIjoxNjgxOTY4NTU2fQ.CF7C2hNRYSHmX2dxWJgd8nWzqu2HZcGVmaSD9MwXCJA",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"google3\",\n    \"link\": \"https://www.google.com\",\n    \"categoryId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/bookmarks/1",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"bookmarks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除书签",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTY4MTk2NzY1NiwiZXhwIjoxNjgxOTY4NTU2fQ.CF7C2hNRYSHmX2dxWJgd8nWzqu2HZcGVmaSD9MwXCJA",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"google3\",\n    \"link\": \"https://www.google.com\",\n    \"categoryId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/bookmarks/4",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"bookmarks",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "用户信息",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:2000/v1/users/profile",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新用户信息",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"zhansan\",\n    \"avatar\": \"http://\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:2000/v1/users/profile",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "上传接口",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-length": true,
+					"host": true,
+					"user-agent": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/Users/lightsaid/Desktop/face/cat-5183427_1280.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:2000/v1/uploads",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"v1",
+						"uploads"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTY4MTk3MDE0OSwiZXhwIjoxNjgxOTcxMDQ5fQ.EAi5it7ymFdTWCtudbRTqujegIAGPXwR6MP2L4srYoA"
+		}
+	]
+}

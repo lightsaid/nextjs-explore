@@ -10,15 +10,20 @@ import userRoute from "./routes/user_route"
 import categoryRoute from "./routes/category_route"
 import bookmarkRoute from "./routes/bookmark_route"
 import smsRoute from "./routes/sms_route"
+import uploadRoute from "./routes/upload_route"
 import { authenticated } from "./middleware/index"
+import cors from "cors"
 
-console.log(">>> env: ",process.env)
+console.log(">>> env: ", process.env)
 
 const config = {
     serverPort: process.env.SERVER_PORT || 2000
 }
 
 const app = express()
+
+// 处理跨域
+app.use(cors())
 
 // 解析参数、cookie、json 
 app.use(express.urlencoded({extended: false}))
@@ -28,12 +33,25 @@ app.use(express.json())
 // 记录请求日志
 app.use(morgan("dev"))
 
-// api路由
+// api 路由
 app.use("/v1/auth", authRoute)
 app.use("/v1/users", authenticated, userRoute)
 app.use("/v1/categories", authenticated, categoryRoute)
 app.use("/v1/bookmarks", authenticated, bookmarkRoute)
 app.use("/v1/sms", smsRoute)
+app.use("/v1/uploads", uploadRoute)
+
+// test upload
+app.get('/upload', (req, res) => {
+    res.send(`
+      <h2>With <code>"express"</code> npm package</h2>
+      <form action="/v1/uploads" enctype="multipart/form-data" method="post">
+        <div>Text field title: <input type="text" name="title" /></div>
+        <div>File: <input type="file" name="image" multiple="multiple" /></div>
+        <input type="submit" value="Upload" />
+      </form>
+    `);
+  });
 
 // 静态资源
 app.use(express.static(path.join(__dirname, "static")))
@@ -42,8 +60,9 @@ app.use(express.static(path.join(__dirname, "static")))
 app.use((req, res, next) => {
     if (req.originalUrl.startsWith("/static/")) {
         let url = req.originalUrl.split("/static")[1]
+        console.log(">>> ", url)
         if (url) {
-            return res.redirect
+            return res.redirect(url)
         }
     }
     next()
@@ -83,7 +102,7 @@ app.use((error: AppError, req: Request, res: Response, next: NextFunction) => {
     if (error.message.length > 20) {
         error.message = "服务内部错误"
     }
-    
+
     res.status(error.statusCode).json({
         status: error.status,
         message: error.message
